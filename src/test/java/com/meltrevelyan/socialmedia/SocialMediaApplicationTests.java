@@ -1,4 +1,4 @@
-package com.meltrevelyan.socialMedia;
+package com.meltrevelyan.socialmedia;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
