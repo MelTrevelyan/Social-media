@@ -1,11 +1,12 @@
 package com.meltrevelyan.socialmedia.user.service;
 
+import com.meltrevelyan.socialmedia.user.dto.JwtRequest;
 import com.meltrevelyan.socialmedia.user.dto.UserRegistrationDto;
 import org.springframework.http.ResponseEntity;
 
 public interface AuthService {
 
-    public ResponseEntity<Object> createAuthToken();
+    ResponseEntity<Object> createAuthToken(JwtRequest authRequest);
 
-    public ResponseEntity<?> createNewUser(UserRegistrationDto registrationDto);
+    ResponseEntity<Object> createNewUser(UserRegistrationDto registrationDto);
 }

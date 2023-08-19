@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +24,14 @@ import java.util.Collections;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserOutDto addUser(UserRegistrationDto registrationDto) {
         User user = UserMapper.toUser(registrationDto);
-        log.info("Adding new user with email {}", user.getEmail());
+        user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+        log.info("Adding new user with email {} and username {}", user.getEmail(), user.getUsername());
+        userRepository.save(user);
         return UserMapper.toOutDto(user);
     }
 
@@ -54,8 +58,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 Collections.emptyList());
     }
 
-    private User findByUsername(String username) {
+    @Override
+    public User findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User '%s' was not found", username)));
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.findByUsername(username).isPresent();
     }
 }

@@ -2,6 +2,7 @@ package com.meltrevelyan.socialmedia.user.service;
 
 import com.meltrevelyan.socialmedia.user.dto.UserOutDto;
 import com.meltrevelyan.socialmedia.user.dto.UserRegistrationDto;
+import com.meltrevelyan.socialmedia.user.model.User;
 
 public interface UserService {
 
@@ -10,4 +11,8 @@ public interface UserService {
     void deleteUser(Long userId);
 
     UserOutDto addFriendshipRequest(Long userId, Long friendId);
+
+    User findByUsername(String username);
+
+    boolean existsByUsername(String username);
 }
