@@ -13,9 +13,9 @@ import javax.validation.constraints.Size;
 public class JwtRequest {
 
     @NotEmpty
-    @Size(min = 6, max = 255, message = "Name size must be between 6 and 255 symbols")
+    @Size(min = 3, max = 255, message = "Name size must be between 3 and 255 symbols")
     private String username;
     @NotEmpty
-    @Size(min = 6, max = 50, message = "Password size must be between 6 and 255 symbols")
+    @Size(min = 3, max = 50, message = "Password size must be between 3 and 255 symbols")
     private String password;
 }
