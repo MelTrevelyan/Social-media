@@ -3,6 +3,8 @@ package com.meltrevelyan.socialmedia.user.dto;
 import com.meltrevelyan.socialmedia.user.model.User;
 import lombok.experimental.UtilityClass;
 
+import java.util.stream.Collectors;
+
 @UtilityClass
 public class UserMapper {
 
@@ -19,5 +21,19 @@ public class UserMapper {
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .build();
+    }
+
+    public static UserWithFollowersDto toUserWithFollowersDto(User user) {
+        UserWithFollowersDto dto = UserWithFollowersDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .build();
+
+        dto.setFollowerIds(user.getFollowers().stream()
+                .map(User::getId)
+                .collect(Collectors.toList()));
+
+        return dto;
     }
 }

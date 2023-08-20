@@ -12,8 +12,6 @@ public interface UserService {
 
     User findUserById(Long userId);
 
-    UserOutDto addFriendshipRequest(Long userId, Long friendId);
-
     User findByUsername(String username);
 
     boolean existsByUsername(String username);

@@ -41,6 +41,13 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public AppError handleInvalidRequestException(InvalidRequestException e) {
+        log.error(e.getMessage());
+        return new AppError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), "Invalid request");
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public AppError handleNotAuthorForbiddenException(NotAuthorForbiddenException e) {
         log.error(e.getMessage());

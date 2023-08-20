@@ -1,11 +1,9 @@
 package com.meltrevelyan.socialmedia.user.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Builder
@@ -22,4 +20,13 @@ public class User {
     private String username;
     @Column(name = "user_password")
     private String password;
+    @ToString.Exclude
+    @ManyToMany
+    @JoinTable(name = "user_followers",
+            joinColumns = @JoinColumn(name = "follower_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> followers;
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "followers")
+    private Set<User> publishers;
 }
