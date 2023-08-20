@@ -40,6 +40,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(String.format("User with id %d was not found", userId)));
+    }
+
+    @Override
     public UserOutDto addFriendshipRequest(Long userId, Long friendId) {
         return null;
     }

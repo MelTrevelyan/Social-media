@@ -32,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
                     authRequest.getPassword()));
         } catch (BadCredentialsException e) {
             return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(),
-                    "Wrong username or password"), HttpStatus.UNAUTHORIZED);
+                    "Wrong username or password", "Unable to authorize"), HttpStatus.UNAUTHORIZED);
         }
         UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
@@ -42,12 +42,13 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<Object> createNewUser(UserRegistrationDto registrationDto) {
         if (!registrationDto.getPassword().equals(registrationDto.getConfirmPassword())) {
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Passwords do not match"),
-                    HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Passwords do not match",
+                    "Unable to create new user"), HttpStatus.BAD_REQUEST);
         }
         if (userService.existsByUsername(registrationDto.getUsername())) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),
-                    "User with chosen name already exists"), HttpStatus.BAD_REQUEST);
+                    "User with chosen name already exists", "Unable to create new user"),
+                    HttpStatus.BAD_REQUEST);
         }
         UserOutDto outDto = userService.addUser(registrationDto);
         return ResponseEntity.ok(outDto);

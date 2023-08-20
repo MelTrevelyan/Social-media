@@ -10,6 +10,8 @@ public interface UserService {
 
     void deleteUser(Long userId);
 
+    User findUserById(Long userId);
+
     UserOutDto addFriendshipRequest(Long userId, Long friendId);
 
     User findByUsername(String username);
