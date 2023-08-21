@@ -1,6 +1,6 @@
 package com.meltrevelyan.socialmedia.post.service;
 
-import com.meltrevelyan.socialmedia.exception.NotAuthorForbiddenException;
+import com.meltrevelyan.socialmedia.exception.AccessForbiddenException;
 import com.meltrevelyan.socialmedia.exception.PostNotFoundException;
 import com.meltrevelyan.socialmedia.post.dto.NewPostDto;
 import com.meltrevelyan.socialmedia.post.dto.PostMapper;
@@ -99,7 +99,7 @@ public class PostServiceImpl implements PostService {
 
     private void checkAuthor(Long userId, Post post) {
         if (!post.getAuthor().getId().equals(userId)) {
-            throw new NotAuthorForbiddenException("Only an author of the post is allowed to do the operation");
+            throw new AccessForbiddenException("Only an author of the post is allowed to do the operation");
         }
     }
 }

@@ -1,15 +1,13 @@
 package com.meltrevelyan.socialmedia.friendship.model;
 
 import com.meltrevelyan.socialmedia.user.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "friendships")

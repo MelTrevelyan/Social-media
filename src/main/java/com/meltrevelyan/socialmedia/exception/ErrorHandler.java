@@ -27,6 +27,13 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public AppError handleFriendshipNotFoundException(FriendshipNotFoundException e) {
+        log.error(e.getMessage());
+        return new AppError(HttpStatus.NOT_FOUND.value(), e.getMessage(), "Unable to find required friendship");
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public AppError handleInvalidJwtException(InvalidJwtException e) {
         log.error(e.getMessage());
@@ -49,7 +56,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public AppError handleNotAuthorForbiddenException(NotAuthorForbiddenException e) {
+    public AppError handleNotAuthorForbiddenException(AccessForbiddenException e) {
         log.error(e.getMessage());
         return new AppError(HttpStatus.FORBIDDEN.value(), e.getMessage(), "Access is prohibited");
     }
