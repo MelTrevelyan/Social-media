@@ -1,3 +1,4 @@
+  DROP TABLE IF EXISTS messages;
   DROP TABLE IF EXISTS friendships;
   DROP TABLE IF EXISTS user_followers;
   DROP TABLE IF EXISTS posts;
@@ -21,7 +22,7 @@
   CONSTRAINT fk_posts_to_users FOREIGN KEY(author_id) REFERENCES users(id));
 
   CREATE TABLE IF NOT EXISTS user_followers (
-  user_id BIGINT                            NOT NULL,
+  user_id     BIGINT                        NOT NULL,
   follower_id BIGINT                        NOT NULL,
   CONSTRAINT user_followers_pk PRIMARY KEY (user_id, follower_id),
   CONSTRAINT fk_user_followers_to_users FOREIGN KEY(user_id) REFERENCES users(id),
@@ -34,3 +35,12 @@
   status VARCHAR(10)                        NOT NULL,
   CONSTRAINT fk_friendships_requesters_to_users FOREIGN KEY(requester_id) REFERENCES users(id),
   CONSTRAINT fk_friendships_receivers_to_users FOREIGN KEY(receiver_id) REFERENCES users(id));
+
+  CREATE TABLE IF NOT EXISTS messages (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  sender_id    BIGINT                       NOT NULL,
+  receiver_id  BIGINT                       NOT NULL,
+  text         VARCHAR(7000)                NOT NULL,
+  created_at   TIMESTAMP WITHOUT TIME ZONE  NOT NULL,
+  CONSTRAINT fk_messages_senders_to_users FOREIGN KEY(sender_id) REFERENCES users(id),
+  CONSTRAINT fk_messages_receivers_to_users FOREIGN KEY(receiver_id) REFERENCES users(id));

@@ -12,6 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @Transactional
@@ -37,6 +40,14 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.deleteById(userId);
         log.info("User with id {} was deleted", userId);
+    }
+
+    @Override
+    public List<UserOutDto> findAllUsers() {
+        log.info("Finding all users");
+        return userRepository.findAll().stream()
+                .map(UserMapper::toOutDto)
+                .collect(Collectors.toList());
     }
 
     @Override
