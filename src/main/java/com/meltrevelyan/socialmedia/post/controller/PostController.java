@@ -8,10 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.io.IOException;
 import java.util.List;
 
 @Validated
@@ -25,7 +27,11 @@ public class PostController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PostOutDto addNewPost(@Valid @RequestBody NewPostDto newPostDto,
-                                 @RequestHeader("X-Social-Media-User-Id") Long authorId) {
+                                 @RequestPart(required = false, name = "image") MultipartFile file,
+                                 @RequestHeader("X-Social-Media-User-Id") Long authorId) throws IOException {
+        if (file != null) {
+            newPostDto.setImage(file.getBytes());
+        }
         return postService.addNewPost(authorId, newPostDto);
     }
 
@@ -44,8 +50,12 @@ public class PostController {
 
     @PatchMapping(value = "/{postId}")
     PostOutDto updatePost(@RequestHeader("X-Social-Media-User-Id") Long userId,
+                          @RequestPart(required = false, name = "image") MultipartFile file,
                           @Positive @PathVariable Long postId,
-                          @Valid @RequestBody PostUpdateDto updateDto) {
+                          @Valid @RequestBody PostUpdateDto updateDto) throws IOException {
+        if (file != null) {
+            updateDto.setImage(file.getBytes());
+        }
         return postService.updatePost(userId, postId, updateDto);
     }
 

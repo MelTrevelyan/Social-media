@@ -75,7 +75,8 @@ public class PostServiceImpl implements PostService {
             post.setImage(updateDto.getImage());
         }
         log.info("Post with id {} was updated", postId);
-        return PostMapper.toOutDto(postRepository.save(post));
+        post = postRepository.save(post);
+        return PostMapper.toOutDto(post);
     }
 
     @Override

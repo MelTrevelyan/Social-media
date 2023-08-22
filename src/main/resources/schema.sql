@@ -16,7 +16,7 @@
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   heading    VARCHAR(150)                   NOT NULL,
   text       VARCHAR(7000)                  NOT NULL,
-  image      BYTEA                          NOT NULL,
+  image      BYTEA,
   author_id  BIGINT                         NOT NULL,
   created_at TIMESTAMP WITHOUT TIME ZONE    NOT NULL,
   CONSTRAINT fk_posts_to_users FOREIGN KEY(author_id) REFERENCES users(id));
