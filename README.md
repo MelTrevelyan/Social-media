@@ -3,9 +3,8 @@
 ## Технологии
 
 - Java 11
-- Фреймворк: Spring Boot v.2.7.15
+- Spring Boot v.2.7.15
 - PostgreSQL
-- H2 (для тестирования)
 - Hibernate
 - Spring Security
 - OpenAPI 3
