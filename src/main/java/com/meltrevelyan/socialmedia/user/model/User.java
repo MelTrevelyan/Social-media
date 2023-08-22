@@ -1,8 +1,10 @@
 package com.meltrevelyan.socialmedia.user.model;
 
+import com.meltrevelyan.socialmedia.role.Role;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -29,4 +31,10 @@ public class User {
     @ToString.Exclude
     @ManyToMany(mappedBy = "followers")
     private Set<User> publishers;
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
 }

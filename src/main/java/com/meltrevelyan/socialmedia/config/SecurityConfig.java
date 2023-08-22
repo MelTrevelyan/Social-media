@@ -28,21 +28,25 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
                 .cors().disable()
-                .authorizeRequests()
-                .antMatchers("/registration", "/auth").permitAll()
-                .antMatchers("/users").authenticated()
-                .antMatchers("/posts").authenticated()
-                .antMatchers("/friends").authenticated()
-                .antMatchers("/messages").authenticated()
-                .antMatchers("/welcome").authenticated()
-                .anyRequest().permitAll()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                .and()
-                .addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);
+                .authorizeHttpRequests((auth) -> {
+                    try {
+                        auth
+                                .antMatchers("/users").hasRole("USER")
+                                .antMatchers("/posts").hasRole("USER")
+                                .antMatchers("/friends").hasRole("USER")
+                                .antMatchers("/subscriptions").hasRole("USER")
+                                .antMatchers("/messages").hasRole("USER")
+                                .anyRequest().permitAll()
+                                .and()
+                                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                                .and()
+                                .exceptionHandling()
+                                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                                .and().addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
         return httpSecurity.build();
     }

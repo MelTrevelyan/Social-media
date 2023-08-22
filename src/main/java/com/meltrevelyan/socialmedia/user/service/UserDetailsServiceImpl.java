@@ -1,15 +1,17 @@
 package com.meltrevelyan.socialmedia.user.service;
 
 import com.meltrevelyan.socialmedia.exception.UserNotFoundException;
+import com.meltrevelyan.socialmedia.role.RoleRepository;
 import com.meltrevelyan.socialmedia.user.model.User;
 import com.meltrevelyan.socialmedia.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +25,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                Collections.emptyList());
+                user.getRoles().stream()
+                        .map(role -> new SimpleGrantedAuthority(role.getName()))
+                        .collect(Collectors.toList()));
     }
 
     private User findByUsername(String username) {

@@ -2,7 +2,13 @@
   DROP TABLE IF EXISTS friendships;
   DROP TABLE IF EXISTS user_followers;
   DROP TABLE IF EXISTS posts;
+  DROP TABLE IF EXISTS users_roles;
   DROP TABLE IF EXISTS users;
+  DROP TABLE IF EXISTS roles;
+
+  CREATE TABLE IF NOT EXISTS roles (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name VARCHAR(20)                          NOT NULL);
 
   CREATE TABLE IF NOT EXISTS users (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -12,11 +18,18 @@
   CONSTRAINT uq_user_email UNIQUE (email),
   CONSTRAINT uq_user_name UNIQUE (username));
 
+  CREATE TABLE IF NOT EXISTS users_roles (
+  user_id  BIGINT                         NOT NULL,
+  role_id  BIGINT                         NOT NULL,
+  CONSTRAINT users_roles_pk PRIMARY KEY (user_id, role_id),
+  CONSTRAINT fk_users_roles_to_users FOREIGN KEY(user_id) REFERENCES users(id),
+  CONSTRAINT fk_users_roles_to_roles FOREIGN KEY(role_id) REFERENCES roles(id));
+
   CREATE TABLE IF NOT EXISTS posts (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   heading    VARCHAR(150)                   NOT NULL,
   text       VARCHAR(7000)                  NOT NULL,
-  image      BYTEA,
+  image      OID,
   author_id  BIGINT                         NOT NULL,
   created_at TIMESTAMP WITHOUT TIME ZONE    NOT NULL,
   CONSTRAINT fk_posts_to_users FOREIGN KEY(author_id) REFERENCES users(id));

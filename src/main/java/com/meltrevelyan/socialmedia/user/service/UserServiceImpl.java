@@ -1,6 +1,8 @@
 package com.meltrevelyan.socialmedia.user.service;
 
 import com.meltrevelyan.socialmedia.exception.UserNotFoundException;
+import com.meltrevelyan.socialmedia.role.Role;
+import com.meltrevelyan.socialmedia.role.RoleRepository;
 import com.meltrevelyan.socialmedia.user.dto.UserMapper;
 import com.meltrevelyan.socialmedia.user.dto.UserOutDto;
 import com.meltrevelyan.socialmedia.user.dto.UserRegistrationDto;
@@ -22,12 +24,15 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserOutDto addUser(UserRegistrationDto registrationDto) {
         User user = UserMapper.toUser(registrationDto);
+        List<Role> roles = List.of(roleRepository.findByName("ROLE_USER"));
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+        user.setRoles(roles);
         log.info("Adding new user with email {} and username {}", user.getEmail(), user.getUsername());
         return UserMapper.toOutDto(userRepository.save(user));
     }
