@@ -29,8 +29,7 @@ public class UserServiceImpl implements UserService {
         User user = UserMapper.toUser(registrationDto);
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         log.info("Adding new user with email {} and username {}", user.getEmail(), user.getUsername());
-        userRepository.save(user);
-        return UserMapper.toOutDto(user);
+        return UserMapper.toOutDto(userRepository.save(user));
     }
 
     @Override
@@ -54,12 +53,6 @@ public class UserServiceImpl implements UserService {
     public User findUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with id %d was not found", userId)));
-    }
-
-    @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(String.format("User '%s' was not found", username)));
     }
 
     @Override

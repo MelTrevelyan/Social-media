@@ -16,7 +16,5 @@ public interface UserService {
 
     User findUserById(Long userId);
 
-    User findByUsername(String username);
-
     boolean existsByUsername(String username);
 }
