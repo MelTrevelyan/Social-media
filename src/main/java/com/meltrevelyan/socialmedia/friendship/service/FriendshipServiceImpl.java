@@ -8,7 +8,7 @@ import com.meltrevelyan.socialmedia.friendship.dto.FriendshipMapper;
 import com.meltrevelyan.socialmedia.friendship.model.Friendship;
 import com.meltrevelyan.socialmedia.friendship.model.FriendshipStatus;
 import com.meltrevelyan.socialmedia.friendship.repository.FriendshipRepository;
-import com.meltrevelyan.socialmedia.subscription.SubscriptionService;
+import com.meltrevelyan.socialmedia.subscription.service.SubscriptionService;
 import com.meltrevelyan.socialmedia.user.model.User;
 import com.meltrevelyan.socialmedia.user.service.UserService;
 import lombok.RequiredArgsConstructor;
