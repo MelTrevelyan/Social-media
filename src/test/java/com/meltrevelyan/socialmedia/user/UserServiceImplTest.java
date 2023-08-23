@@ -1,6 +1,8 @@
 package com.meltrevelyan.socialmedia.user;
 
 import com.meltrevelyan.socialmedia.exception.UserNotFoundException;
+import com.meltrevelyan.socialmedia.role.Role;
+import com.meltrevelyan.socialmedia.role.RoleRepository;
 import com.meltrevelyan.socialmedia.user.dto.UserOutDto;
 import com.meltrevelyan.socialmedia.user.dto.UserRegistrationDto;
 import com.meltrevelyan.socialmedia.user.model.User;
@@ -27,6 +29,8 @@ public class UserServiceImplTest {
     private UserRepository userRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private RoleRepository roleRepository;
     @InjectMocks
     private UserServiceImpl userService;
     private final User user = User.builder()
@@ -34,6 +38,7 @@ public class UserServiceImplTest {
             .email("lily@mail.ru")
             .username("lily")
             .password("password")
+            .roles(List.of(new Role()))
             .build();
     private final UserRegistrationDto  registrationDto = new UserRegistrationDto("lily@mail.ru", "lily",
             "password", "password");
@@ -59,6 +64,7 @@ public class UserServiceImplTest {
     void addUserThenReturnUserDto() {
         when(userRepository.save(any(User.class))).thenReturn(user);
         when(passwordEncoder.encode(registrationDto.getPassword())).thenReturn(anyString());
+        when(roleRepository.findByName("ROLE_USER")).thenReturn(new Role());
 
         UserOutDto result = userService.addUser(registrationDto);
 

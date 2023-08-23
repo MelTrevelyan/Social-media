@@ -35,7 +35,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         User requester = findRequester(requesterId);
         User publisher = findPublisher(publisherId);
 
-        if (requester.getFollowers().contains(publisher)) {
+        if (requester.getPublishers().contains(publisher)) {
             throw new InvalidRequestException("User is already subscribed to publisher");
         }
 
@@ -53,7 +53,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         User requester = findRequester(requesterId);
         User publisher = findPublisher(publisherId);
 
-        if (!requester.getFollowers().contains(publisher)) {
+        if (!requester.getPublishers().contains(publisher)) {
             throw new InvalidRequestException("User is not subscribed to publisher");
         }
 
