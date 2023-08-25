@@ -31,11 +31,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> {
                     try {
                         auth
-                                .antMatchers("/users").hasRole("USER")
-                                .antMatchers("/posts").hasRole("USER")
-                                .antMatchers("/friends").hasRole("USER")
-                                .antMatchers("/subscriptions").hasRole("USER")
-                                .antMatchers("/messages").hasRole("USER")
+                                .antMatchers("/users/*").hasRole("USER")
+                                .antMatchers("/posts/*").hasRole("USER")
+                                .antMatchers("/friends/*").hasRole("USER")
+                                .antMatchers("/subscriptions/*").hasRole("USER")
+                                .antMatchers("/messages/*").hasRole("USER")
                                 .anyRequest().permitAll()
                                 .and()
                                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

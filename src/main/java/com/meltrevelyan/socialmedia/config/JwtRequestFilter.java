@@ -39,8 +39,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 username = jwtTokenUtil.getUsername(jwt);
             } catch (ExpiredJwtException e) {
                 handleAuthenticationFail(response, "expired token", "token is invalid, lifetime is over");
+                return;
             } catch (SignatureException e) {
                 handleAuthenticationFail(response, "invalid signature", "token signature is invalid");
+                return;
             }
         }
 
