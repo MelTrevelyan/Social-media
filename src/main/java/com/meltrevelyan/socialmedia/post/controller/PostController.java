@@ -6,6 +6,7 @@ import com.meltrevelyan.socialmedia.post.dto.PostUpdateDto;
 import com.meltrevelyan.socialmedia.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,9 +25,9 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
-    public PostOutDto addNewPost(@Valid @RequestBody NewPostDto newPostDto,
+    public PostOutDto addNewPost(@Valid @RequestPart NewPostDto newPostDto,
                                  @RequestPart(required = false, name = "image") MultipartFile file,
                                  @RequestHeader("X-Social-Media-User-Id") Long authorId) throws IOException {
         if (file != null) {
@@ -48,11 +49,11 @@ public class PostController {
         return postService.findNewPosts(userId, from, size);
     }
 
-    @PatchMapping(value = "/{postId}")
+    @PatchMapping(value = "/{postId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     PostOutDto updatePost(@RequestHeader("X-Social-Media-User-Id") Long userId,
                           @RequestPart(required = false, name = "image") MultipartFile file,
                           @Positive @PathVariable Long postId,
-                          @Valid @RequestBody PostUpdateDto updateDto) throws IOException {
+                          @Valid @RequestPart PostUpdateDto updateDto) throws IOException {
         if (file != null) {
             updateDto.setImage(file.getBytes());
         }
